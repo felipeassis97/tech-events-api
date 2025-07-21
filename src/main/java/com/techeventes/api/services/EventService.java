@@ -3,6 +3,7 @@ package com.techeventes.api.services;
 import com.amazonaws.services.s3.AmazonS3;
 import com.techeventes.api.domain.events.Event;
 import com.techeventes.api.domain.events.EventRequestDTO;
+import com.techeventes.api.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,12 +20,14 @@ import java.util.logging.Logger;
 public class EventService {
 
     private final AmazonS3 s3Client;
+    private final EventRepository repository;
     Logger logger = Logger.getLogger(getClass().getName());
     @Value("${aws.bucket.name}")
     private String bucketName;
-    
-    public EventService(AmazonS3 s3Client) {
+
+    public EventService(AmazonS3 s3Client, EventRepository repository) {
         this.s3Client = s3Client;
+        this.repository = repository;
     }
 
     public Event createEvent(EventRequestDTO data) {
@@ -36,11 +39,12 @@ public class EventService {
         Event newEvent = new Event();
         newEvent.setTitle(data.title());
         newEvent.setDescription(data.description());
-        newEvent.setEvetUrl(data.eventUrl());
+        newEvent.setEventUrl(data.eventUrl());
         newEvent.setDate(new Date(data.date()));
         newEvent.setImageUrl(imageUrl);
+        newEvent.setRemote(data.remote());
 
-        return newEvent;
+        return repository.save(newEvent);
     }
 
     private String uploadImage(MultipartFile image) {
