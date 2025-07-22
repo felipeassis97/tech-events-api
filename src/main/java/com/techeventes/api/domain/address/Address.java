@@ -1,7 +1,9 @@
 package com.techeventes.api.domain.address;
+
 import com.techeventes.api.domain.events.Event;
 
 import java.util.UUID;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +24,7 @@ public class Address {
     private String city;
     private String uf;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "event_id")
     private Event event;
 }

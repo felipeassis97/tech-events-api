@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public record EventResponseDTO(
+public record EventDetailsResponseDTO(
         UUID id,
         String title,
         String description,
@@ -15,6 +15,7 @@ public record EventResponseDTO(
         String state,
         Boolean remote,
         String eventUrl,
-        String imageUrl
+        String imageUrl,
+        List<CouponResponseDTO> coupons
 ) {
 }

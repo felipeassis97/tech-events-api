@@ -5,3 +5,5 @@ public record CouponRequestDTO(
         Integer discount,
         Long valid) {
 }
+
+
